@@ -27,12 +27,38 @@ def binary_search(arr, target):
     # 0(log(n)) - средняя скорость алгоритма с отсортированным массивом
     # 0(n log(n)) - средняя скорость алгоритма с сортировкой
 
+# Функция для замера времени выполнения
+def measure_time(func, data, target):
+    """Измеряет время выполнения функции в миллисекундах."""
+    start_time = timeit.default_timer()
+    func(data, target)
+    end_time = timeit.default_timer()
+    return (end_time - start_time) * 1000 # Конвертация в миллисекунды
 
+
+# Проведение экспериментов
 sizes = [1000, 5000, 10000, 50000, 100000, 500000] # Размеры массивов
+times = [] # Время выполнения для каждого размера
+print("Замеры времени выполнения для алгоритма суммирования массива:")
+print("{:>3} {:>12} {:>12} {:>15}".format("Алгоритм", "Размер (N)", "Время (мс)", "Время/N (мкс)"))
+target = 5
 
+# Тестирование
 for size in sizes:
     # Генерация случайного массива заданного размера
     data = [random.randint(1, 1000) for _ in range(size)]
-    print("Linear: {:>10} - index: {}".format(size, linear_search(data, 5)))
     data.sort()
-    print("Binary: {:>10} - index: {}".format(size, binary_search(data, 5)))
+    # Замер времени выполнения (усреднение на 10 запусках)
+    execution_time = timeit.timeit(lambda: linear_search(data, target), number=10) * 1000 / 10
+
+    times.append(execution_time)
+    time_per_element = (execution_time * 1000) / size if size > 0 else 0 # мкс на элемент
+    print("Linear: {:>10} {:>12.4f} {:>15.4f}".format(size, execution_time, time_per_element))
+
+    # Замер времени выполнения (усреднение на 10 запусках)
+    execution_time = timeit.timeit(lambda: binary_search(data, target), number=10) * 1000 / 10
+
+    times.append(execution_time)
+    time_per_element = (execution_time * 1000) / size if size > 0 else 0 # мкс на элемент
+
+    print("Binary: {:>10} {:>12.4f} {:>15.4f}".format(size, execution_time, time_per_element))
