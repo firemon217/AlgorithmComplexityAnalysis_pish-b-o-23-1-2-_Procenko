@@ -37,15 +37,24 @@ def measure_time(func, data, target):
     end_time = timeit.default_timer()
     return (end_time - start_time) * 1000 # Конвертация в миллисекунды
 
+pc_info = """
+Характеристики ПК для тестирования:
+- Процессор: Intel Core i7-12700H @ 2.30GHz
+- Оперативная память: 16 GB DDR4
+- ОС: Windows 11
+- Python: 3.13.1
+"""
+
+print(pc_info)
 
 # Проведение экспериментов
 sizes = [1000, 5000, 10000, 50000, 100000, 500000] # Размеры массивов
 linear_times = [] # Время выполнения для каждого размера linear
 binary_times = [] # Время выполнения для каждого размера binary
+target = 500
+
 print("Замеры времени выполнения для алгоритма суммирования массива:")
 print("{:>3} {:>12} {:>12} {:>15}".format("Алгоритм", "Размер (N)", "Время (мс)", "Время/N (мкс)"))
-target = 5
-
 # Тестирование
 for size in sizes:
     # Генерация случайного массива заданного размера
@@ -67,20 +76,32 @@ for size in sizes:
 
     print("Binary: {:>10} {:>12.4f} {:>15.4f}".format(size, execution_time, time_per_element))
 
+
 # Построение графика
-plt.figure(figsize=(10, 6))
-plt.plot(sizes, linear_times, 'bo-', label='Измеренное время линейного поиска')
-plt.plot(sizes, binary_times, 'bo-', label='Измеренное время бинарного поиска', color="red")
+plt.figure(figsize=(14, 6))
+
+# Обычный масштаб
+plt.subplot(1, 2, 1)
+plt.plot(sizes, linear_times, 'bo-', label='Линейный поиск (O(N))', color="blue")
+plt.plot(sizes, binary_times, 'ro-', label='Бинарный поиск (O(log N))', color="red")
 plt.xlabel('Размер массива (N)')
 plt.ylabel('Время выполнения (мс)')
-plt.title('График времени выполнения линейного поиска и бинарного поиска \n Сложность O(N)/O(log N)')
+plt.title('Обычный масштаб')
 plt.grid(True, which='both', linestyle='--', linewidth=0.5)
 plt.legend()
+
+# Логарифмический масштаб по Y
+plt.subplot(1, 2, 2)
+plt.plot(sizes, linear_times, 'bo-', label='Линейный поиск (O(N))', color="blue")
+plt.plot(sizes, binary_times, 'ro-', label='Бинарный поиск (O(log N))', color="red")
+plt.yscale("log")
+plt.xlabel('Размер массива (N)')
+plt.ylabel('Время выполнения (мс, log scale)')
+plt.title('Логарифмический масштаб по Y')
+plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+plt.legend()
+
+# Сохраняем и показываем
+plt.tight_layout()
 plt.savefig('time_complexity_plot.png', dpi=300, bbox_inches='tight')
 plt.show()
-
-# Дополнительный анализ: сравнение с теоретической оценкой
-print("\nАнализ результатов:")
-print("1. Теоретическая сложность алгоритма: O(N)")
-print("2. Практические замеры показывают линейную зависимость времени от N")
-print("3. Время на один элемент примерно постоянно (~{:.4f}мкс)".format(time_per_element))
