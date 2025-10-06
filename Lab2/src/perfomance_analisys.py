@@ -22,12 +22,12 @@ print(f"list.insert(0, x): {time_list:.6f} сек")
 print(f"LinkedList.insert_at_start(x): {time_linkedlist:.6f} сек\n")
 
 # Сравнение производительности list vs deque для очереди
-def test_list_queue(n=1000):
+def test_list_queue(n=1000): # Для list
     lst = list(range(n))
     for _ in range(n):
         lst.pop(0)
 
-def test_deque_queue(n=1000):
+def test_deque_queue(n=1000): # Для deque
     dq = deque(range(n))
     for _ in range(n):
         dq.popleft()
