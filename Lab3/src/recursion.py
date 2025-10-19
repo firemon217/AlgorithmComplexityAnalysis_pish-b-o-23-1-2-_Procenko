@@ -5,7 +5,7 @@ def factorial(n: int) -> int:
     return n * factorial(n - 1)
 
 # Временная сложность: O(n)
-# Глубина рекурсии: O(n)
+# Глубина рекурсии: O(h)
 
 
 def fibonacci(n: int) -> int:
@@ -15,7 +15,7 @@ def fibonacci(n: int) -> int:
     return fibonacci(n - 1) + fibonacci(n - 2) # Временная сложность: O(2^n)
 
 # Временная сложность: O(2^n)
-# Глубина рекурсии: O(n)
+# Глубина рекурсии: O(h)
 
 
 def fast_power(a: float, n: int) -> float:
@@ -29,4 +29,4 @@ def fast_power(a: float, n: int) -> float:
         return a * fast_power(a, n - 1) # Рекурсивный вызов
 
 # Временная сложность: O(log n)
-# Глубина рекурсии: O(log n)
+# Глубина рекурсии: O(log h)
