@@ -35,17 +35,6 @@ plt.grid(True)
 plt.savefig('fibonacci_time_comparison.png')
 plt.show()
 
-# 3. Измерение максимальной глубины рекурсии для обхода файловой системы
-def max_depth_walk(path, current_depth=0):
-    if not os.path.exists(path):
-        return current_depth
-    max_depth = current_depth
-    for item in os.listdir(path):
-        full_path = os.path.join(path, item)
-        if os.path.isdir(full_path):
-            max_depth = max(max_depth, max_depth_walk(full_path, current_depth + 1))
-    return max_depth
-
 # Пример использования (заменить 'root_dir' на путь к вашей тестовой директории)
 root_dir = '.'  # текущий каталог
 max_depth = walk_directory(root_dir)
