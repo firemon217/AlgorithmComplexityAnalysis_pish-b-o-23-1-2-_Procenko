@@ -18,16 +18,19 @@ def binary_search(arr, target, left=0, right=None):
 # Глубина рекурсии: O(log h)
 
 
-def walk_directory(path, indent=0):
+def walk_directory(path, indent=0, current_depth=1):
     """Рекурсивный обход файловой системы с выводом дерева каталогов и файлов."""
-    if not os.path.exists(path): # Проверка существования пути O(1)
-        print("Путь не существует") # O(1)
-        return 
-    for item in os.listdir(path): # Перебор элементов в каталоге O(N)
-        full_path = os.path.join(path, item) # Полный путь к элементу O(1)
-        print(" " * indent + f"- {item}") # Вывод элемента с отступом O(1)
-        if os.path.isdir(full_path): # Проверка, является ли элемент каталогом O(1)
-            walk_directory(full_path, indent + 2) # Рекурсивный вызов для подкаталога O(n)
+    if not os.path.exists(path):
+        print("Путь не существует")
+        return 0
+    max_found_depth = current_depth
+    for item in sorted(os.listdir(path)):
+        full_path = os.path.join(path, item)
+        print(" " * indent + f"- {item} - {current_depth}")
+        if os.path.isdir(full_path):
+            sub_depth = walk_directory(full_path, indent + 2, current_depth + 1)
+            max_found_depth = max(max_found_depth, sub_depth)
+    return max_found_depth
 
 # Временная сложность: O(N), где N — количество файлов и папок
 # Глубина рекурсии: O(H), где H — максимальная глубина вложенности каталогов

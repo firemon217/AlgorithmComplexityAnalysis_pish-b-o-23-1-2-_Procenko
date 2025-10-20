@@ -14,7 +14,7 @@ def fibonacci_memo(n: int, memo=None) -> int:
     if n in memo: # Проверяем, не вычисляли ли мы уже это значение
         return memo[n] # O(1)
 
-    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo) # Рекурсивный шаг с сохранением результата O(n)
+    memo[n] = fibonacci_memo(n - 1, memo) + fibonacci_memo(n - 2, memo) # Рекурсивный шаг с сохранением результата O(n)
     return memo[n] # O(1)
 
 # Сравнение производительности
